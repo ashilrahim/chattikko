@@ -55,7 +55,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid Credentials " });
     }
 
-    const isPasswordCorrect = await bcrypt.compare(password, User.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect)
       return res.status(400).json({ message: "Invalid Credentials " });
 
@@ -68,11 +68,17 @@ export const login = async (req, res) => {
       profilePic: user.profilePic,
     });
   } catch (error) {
-    console.log("error is login controll", error.message);
+    console.log("error in the login controll", error.message);
     res.status(500).json({ message: "Internal Serval Error " });
   }
 };
 
 export const logout = (req, res) => {
-  res.send("logout route");
+  try {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(400).json({ message: "Logged out Successfully" });
+  } catch (error) {
+    console.log("Error in Logout Controller", error.message);
+    res.status(500).json({ message: "Internal Server Error " });
+  }
 };
