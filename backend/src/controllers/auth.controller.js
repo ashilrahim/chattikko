@@ -5,6 +5,8 @@ import bcrypt from "bcryptjs";
 export const signup = async (req, res) => {
   const { fullname, email, password } = req.body;
   try {
+    if (!fullname || !email || !password)
+      return res.json({ message: "All fields are required " });
     if (password.length < 6) {
       return res
         .status(400)
