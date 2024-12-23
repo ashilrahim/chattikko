@@ -8,7 +8,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 
-router.post("/updateProfilePic", protectRoute, updateProfile)
+router.put("/updateProfilePic", protectRoute, updateProfile)
 
 router.get("/check", protectRoute, checkAuth)
 
