@@ -9,6 +9,7 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
+  notifications: [],
 
   getUsers: async () => {
     set({ isUsersLoading: true });
@@ -70,18 +71,26 @@ export const useChatStore = create((set, get) => ({
   },
 
   subscribeToMessages: () => {
-    const { selectedUser } = get();
-    if (!selectedUser) return;
-
+    const { selectedUser, messages } = get();
     const socket = useAuthStore.getState().socket;
 
     socket.on("newMessage", (newMessage) => {
-      const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
-      if (!isMessageSentFromSelectedUser) return;
+      const { senderId } = newMessage;
+      const isMessageFromCurrentChat =
+        selectedUser && senderId === selectedUser._id;
 
-      set({
-        messages: [...get().messages, newMessage],
-      });
+      if (isMessageFromCurrentChat) {
+        // Add the message to the current chat
+        set({ messages: [...messages, newMessage] });
+      } else {
+        // Trigger a notification for messages not in the current chat
+        if (Notification.permission === "granted") {
+          new Notification("New Message", {
+            body: newMessage.text || "You received a new message!",
+            icon: "/notification-icon.png", // Replace with your app icon
+          });
+        }
+      }
     });
   },
 
@@ -89,6 +98,17 @@ export const useChatStore = create((set, get) => ({
     const socket = useAuthStore.getState().socket;
     socket.off("newMessage");
   },
+  //notification 
+  addNotification: (notification) =>
+    set((state) => ({
+      notifications: [...state.notifications, notification],
+    })),
+  clearNotifications: (senderId) =>
+    set((state) => ({
+      notifications: state.notifications.filter(
+        (notification) => notification.senderId !== senderId
+      ),
+    })),
   //todo: optimize this one later
   setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));
