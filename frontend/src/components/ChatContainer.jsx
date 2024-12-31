@@ -16,8 +16,6 @@ const ChatContainer = () => {
     deleteMessage,
     subscribeToMessages,
     unsubscribeFromMessages,
-    notifications,
-    clearNotifications,
   } = useChatStore();
   const { authUser } = useAuthStore();
 
@@ -44,11 +42,6 @@ const ChatContainer = () => {
     unsubscribeFromMessages,
   ]);
 
-  const handleNotificationClick = (senderId) => {
-    // Clear notifications for this sender and fetch their messages
-    clearNotifications(senderId);
-    getMessages(senderId); // Load the sender's chat
-  };
 
   const handleDeleteMessage = (messageId) => {
     deleteMessage(messageId);
@@ -67,21 +60,6 @@ const ChatContainer = () => {
   return (
     <div className="flex-1 flex flex-col overflow-auto">
       <ChatHeader />
-
-      {/* Notifications */}
-      {notifications.length > 0 && (
-        <div className="absolute top-0 left-0 right-0 z-50 bg-gray-200 p-4 shadow-md">
-          {notifications.map((notification, index) => (
-            <div
-              key={index}
-              className="p-2 bg-white mb-2 rounded-md cursor-pointer hover:bg-gray-100"
-              onClick={() => handleNotificationClick(notification.senderId)}
-            >
-              <p className="text-sm font-medium">{notification.text}</p>
-            </div>
-          ))}
-        </div>
-      )}
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {Array.isArray(messages) && messages.length > 0 ? (
