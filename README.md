@@ -65,18 +65,18 @@ A real-time messaging application built using the MERN stack (MongoDB, Express.j
 
 #### 1.Clone the Repository
 
-```http
+```
   git clone <repository-url>t
   cd Chattikko
 ```
 #### 2.Install Dependencies
 For the server:
-```http
+```
  cd backend
  npm install 
 ```
 For the frontend:
-```http
+```
  cd frontend
  npm install
 ```
@@ -84,13 +84,13 @@ For the frontend:
 
 Start the server:
 
-```http
+```
  cd backend
  npm run dev
 ```
 
 Start the client:
-```http
+```
  cd frontend
  npm run dev
 ```
