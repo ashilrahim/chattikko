@@ -96,6 +96,12 @@ Start the client:
 ```
 
 ####  5.Access the Application Open your browser and go to http://localhost:5173 to view your blog website.
+
+####  If you want to see the project live go to https://chattikko.onrender.com 
+#### Use this credentials to log in 
+`email` = test5@gmail.com
+`password` = 123456 
+
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
